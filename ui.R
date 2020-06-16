@@ -13,10 +13,15 @@ shinyUI(dashboardPage(
       label = "Stats",
       choices = player_stat
     ),
-    checkboxGroupInput(
-      inputId = "comparison",
-      label = "Compared to",
-      choices = compare
+    # checkboxGroupInput(
+    #   inputId = "comparison",
+    #   label = "Compared to",
+    #   choices = compare
+    # ),
+    radioButtons(
+      inputId = "position",
+      label = "Position",
+      choices = position
     ),
     sliderInput(
       "Year",
