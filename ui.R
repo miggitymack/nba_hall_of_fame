@@ -27,7 +27,11 @@ shinyUI(dashboardPage(
       sep = ""
     )
   ),
-  dashboardBody(fluidRow(box(
-    htmlOutput("stat_compare")
-  )))
+  dashboardBody(fluidRow(
+    tabsetPanel(
+      type = "tabs",
+      tabPanel("Stats", plotOutput("stat_compare")),
+      tabPanel("Table", tableOutput("table"))
+    )
+  ))
 ))
