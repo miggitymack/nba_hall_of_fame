@@ -105,21 +105,24 @@ shinyServer(function(input, output) {
   
   
   output$stat_compare = renderPlot({
-    combined_df() %>% ggplot(aes(x = Player, y = switch (input$player_stat,
-                                                  "PER" = Mean_PER,
-                                                  "Points per game" = Mean_PTS / Mean_G,
-                                                  "Offensive rebounds" = Mean_ORB / Mean_G,
-                                                  "Defensive Rebounds" = Mean_DRB / Mean_G,
-                                                  "Total Rebounds per game" = Mean_TRB / Mean_G,
-                                                  "Assists per game" = Mean_AST / Mean_G,
-                                                  "Field Goal Percentage" = Mean_FG,
-                                                  "Effective Field Goal %" = Mean_eFG,
-                                                  "3-Point Field Goal %" = Mean_X3P,
-                                                  "Turnovers per game" = Mean_TOV / Mean_G,
-                                                  "Assist-to-Turnover Ratio" = Mean_AST / Mean_TOV,
-                                                  "VORP" = Mean_VORP,
-                                                  "Minutes Per Game" = Mean_MP / Mean_G
-    ))) + geom_col(fill = "lightblue")
+    combined_df() %>% ggplot(aes(x = Player, y = switch (
+      input$player_stat,
+      "PER" = Mean_PER,
+      "Points per game" = Mean_PTS / Mean_G,
+      "Offensive rebounds" = Mean_ORB / Mean_G,
+      "Defensive Rebounds" = Mean_DRB / Mean_G,
+      "Total Rebounds per game" = Mean_TRB / Mean_G,
+      "Assists per game" = Mean_AST / Mean_G,
+      "Field Goal Percentage" = Mean_FG,
+      "Effective Field Goal %" = Mean_eFG,
+      "3-Point Field Goal %" = Mean_X3P,
+      "Turnovers per game" = Mean_TOV / Mean_G,
+      "Assist-to-Turnover Ratio" = Mean_AST / Mean_TOV,
+      "VORP" = Mean_VORP,
+      "Minutes Per Game" = Mean_MP / Mean_G
+    ))) + geom_col(fill = "lightblue") +
+      ggtitle(paste(toString(input$Year[1]), "-", toString(input$Year[2]), sep = " ")) +
+      ylab(input$player_stat)
   })
   
   output$table = renderTable({
