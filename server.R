@@ -25,6 +25,10 @@ shinyServer(function(input, output) {
     df_stats %>% filter(., Player == input$selected_player)
   })
   
+  selected_player_two = reactive({
+    df_stats %>% filter(., Player == input$selected_player_two)
+  })
+  
   era_mean = reactive({
     season_stats %>% filter(.,
                             Year >= input$Year[1] &
@@ -100,16 +104,25 @@ shinyServer(function(input, output) {
     slice_head(., order_by(Mean_G), 1)
   
   mj_stats = season_stats %>% filter(., Player == "Michael Jordan*")
+  
   season_player_stats = reactive({
     season_stats %>% filter(., Player == input$selected_player)
   })
   
+  season_player_two_stats = reactive({
+    season_stats %>% filter(., Player == input$selected_player_two)
+  })
+  
+  season_year_stats = reactive({
+    season_stats %>% filter
+  })
+  
   combined_df = reactive({
-    bind_rows(selected_player(), mj_mean, avg_player_mean(), era_mean())
+    bind_rows(selected_player(), selected_player_two() , mj_mean, avg_player_mean(), era_mean())
   })
   
   combined_stats = reactive({
-    bind_rows(season_player_stats(), mj_stats)
+    bind_rows(season_player_stats(), season_player_two_stats() , mj_stats)
   })
   
   
@@ -129,7 +142,7 @@ shinyServer(function(input, output) {
       "Assist-to-Turnover Ratio" = Mean_AST / Mean_TOV,
       "VORP" = Mean_VORP,
       "Minutes Per Game" = Mean_MP / Mean_G
-    ))) + geom_col(fill = "lightblue") +
+    ))) + geom_col(aes(fill = Player)) +
       ggtitle(paste(toString(input$Year[1]), "-", toString(input$Year[2]), sep = " ")) +
       ylab(input$player_stat)
   })

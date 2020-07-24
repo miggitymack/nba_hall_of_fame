@@ -8,6 +8,11 @@ shinyUI(dashboardPage(
       label = "NBA Players",
       choices = players
     ),
+    selectizeInput(
+      inputId = "selected_player_two",
+      label = "2nd Player Comparison",
+      choices = players
+    ),
     radioButtons(
       inputId = "player_stat",
       label = "Stats",
