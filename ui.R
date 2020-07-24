@@ -31,7 +31,8 @@ shinyUI(dashboardPage(
     tabsetPanel(
       type = "tabs",
       tabPanel("Stats", plotOutput("stat_compare")),
-      tabPanel("Table", tableOutput("table"))
+      tabPanel("Table", tableOutput("table")),
+      tabPanel("Histogram", plotOutput("histogram"))
     )
   ))
 ))

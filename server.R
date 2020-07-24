@@ -83,7 +83,7 @@ shinyServer(function(input, output) {
     summarise(
       Position = Pos,
       Season = n(),
-      Mean_G = mean(G, na.rm = T),
+      Mean_G = mean(G, na.rm = T), 
       Mean_PER = mean(PER, na.rm = T),
       Mean_PTS = mean(PTS, na.rm = T),
       Mean_TRB = mean(TRB, na.rm = T),
@@ -99,8 +99,17 @@ shinyServer(function(input, output) {
     ) %>%
     slice_head(., order_by(Mean_G), 1)
   
+  mj_stats = season_stats %>% filter(., Player == "Michael Jordan*")
+  season_player_stats = reactive({
+    season_stats %>% filter(., Player == input$selected_player)
+  })
+  
   combined_df = reactive({
     bind_rows(selected_player(), mj_mean, avg_player_mean(), era_mean())
+  })
+  
+  combined_stats = reactive({
+    bind_rows(season_player_stats(), mj_stats)
   })
   
   
@@ -127,6 +136,25 @@ shinyServer(function(input, output) {
   
   output$table = renderTable({
     combined_df()
+  })
+  
+  output$histogram = renderPlot({
+    combined_stats() %>%  ggplot(aes(x = Year, y = switch (
+      input$player_stat,
+      "PER" = PER,
+      "Points per game" = PTS / G,
+      "Offensive rebounds" = ORB.,
+      "Defensive Rebounds" = DRB.,
+      "Total Rebounds per game" = TRB./ G,
+      "Assists per game" = AST. / G,
+      "Field Goal Percentage" = FG,
+      "Effective Field Goal %" = eFG.,
+      "3-Point Field Goal %" = X3P,
+      "Turnovers per game" = TOV / G,
+      "Assist-to-Turnover Ratio" = AST / TOV,
+      "VORP" = VORP,
+      "Minutes Per Game" = MP / G
+    ))) + geom_line(aes(color = Player)) + ylab(input$player_stat)
   })
   
 })
